@@ -50,7 +50,7 @@ async function webSpider_AmazonSQS(maxPages = 2) {
 			} 
 		}); 
         for(let p of paginationQueueURLsToVisit){
-            // await sqsSendMessage(p);
+            await sqsSendMessage(p);
         }
 		// retrieving the product URLs
 		$("li.product a.woocommerce-LoopProduct-link").each((index, element) => { 
@@ -62,7 +62,6 @@ async function webSpider_AmazonSQS(maxPages = 2) {
  	// logging the crawling results 
     console.log(visitedURLs); 
 	//  console.log([...productURLs]);
-   // await sqsReceiveMessage();
 } 
 
 const sqsSendMessage = async (messageData) =>{
@@ -99,48 +98,7 @@ const sqsSendMessage = async (messageData) =>{
       });     
 }
 
-const sqsReceiveMessage = async () =>{
-    let params = {
-        // AttributeNames: [
-        //    "SentTimestamp"
-        // ],
-        MaxNumberOfMessages: 10,
-        //MessageAttributeNames: [
-       //    "All"
-       // ],
-        QueueUrl: queueUrl,
-      //  VisibilityTimeout: 20,
-       // WaitTimeSeconds: 0
-       };
-       
-       sqsAmazon.receiveMessage(params, function(err, data) {
-         if (err) {
-           console.log("Receive Error", err);
-         } else if (data.Messages) {
-             console.log(`Message Lenght:${data.Messages.length}`);
-             for(let m of data.Messages){
-                  console.log(`deleteing Message Id: ${m.Body}`)
-                 sqsDeleteMessage(m.ReceiptHandle).then(res=>{
-                     console.log(res);
-                 });
-             }
-         }
-       });
-}
 
-const sqsDeleteMessage= async (receiptHandle) =>{
-    var deleteParams = {
-        QueueUrl: queueUrl,
-        ReceiptHandle: receiptHandle
-      };
-      sqsAmazon.deleteMessage(deleteParams, function(err, data) {
-        if (err) {
-          console.log("Delete Error", err);
-        } else {
-          console.log("Message Deleted", data);
-        }
-      });    
-}
 // running the main() function 
 webSpider_AmazonSQS();
 // webSpider() 
