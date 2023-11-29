@@ -13,6 +13,9 @@ AWS.config.update(param);
 const sqsAmazon = new AWS.SQS({apiVersion: '2012-11-05'});
 const queueUrl=process.env.queueUrl;
 
+export const handler = async (event,context) =>{
+    await sqsReceiveMessage();
+  }
 
 const sqsReceiveMessage = async () =>{
     let params = {
@@ -58,4 +61,4 @@ const sqsDeleteMessage= async (receiptHandle) =>{
       
 }
 
-await sqsReceiveMessage();
+//await sqsReceiveMessage();

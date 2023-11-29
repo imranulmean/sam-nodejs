@@ -5,9 +5,9 @@ Resources:
   WebspiderRootLambda:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: index.webSpider_AmazonSQS
+      Handler: index.handler
       Runtime: nodejs18.x
-      CodeUri: s3://sam-fahad-nodejs/01971c36de5e9f42f97a0595e3edb1d7
+      CodeUri: s3://sam-fahad-nodejs/136477d3a0bd1a6d41a7f0d4d46da9f8
       Description: WespiderRoot Function
       MemorySize: 128
       Timeout: 30
@@ -31,9 +31,9 @@ Resources:
   WebspiderSqsReceive:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: sqsReceiveMesg.sqsReceiveMessage
+      Handler: sqsReceiveMesg.handler
       Runtime: nodejs18.x
-      CodeUri: s3://sam-fahad-nodejs/01971c36de5e9f42f97a0595e3edb1d7
+      CodeUri: s3://sam-fahad-nodejs/136477d3a0bd1a6d41a7f0d4d46da9f8
       Description: Wespider SQS Function
       MemorySize: 128
       Timeout: 30
@@ -52,12 +52,12 @@ Resources:
     - SQSSendMessagePolicy:
         QueueName:
           Fn::GetAtt:
-          - webSpiderQueue
+          - SQSQueue1
           - QueueName
     - SQSPollerPolicy:
         QueueName:
           Fn::GetAtt:
-          - webSpiderQueue
+          - SQSQueue1
           - QueueName
   SQSQueue1:
     Type: AWS::SQS::Queue

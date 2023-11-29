@@ -5,7 +5,7 @@ Resources:
   WebspiderRootLambda:
     Type: 'AWS::Serverless::Function'
     Properties:
-      Handler: index.webSpider_AmazonSQS
+      Handler: index.handler
       Runtime: nodejs18.x
       CodeUri: .     
       Description: WespiderRoot Function
@@ -26,7 +26,7 @@ Resources:
   WebspiderSqsReceive:
     Type: 'AWS::Serverless::Function'
     Properties:
-      Handler: sqsReceiveMesg.sqsReceiveMessage
+      Handler: sqsReceiveMesg.handler
       Runtime: nodejs18.x
       CodeUri: .
       Description: Wespider SQS Function
@@ -42,10 +42,10 @@ Resources:
     Policies:
       - SQSSendMessagePolicy:
           QueueName:
-            !GetAtt webSpiderQueue.QueueName
+            !GetAtt SQSQueue1.QueueName
       - SQSPollerPolicy:
           QueueName:
-            !GetAtt webSpiderQueue.QueueName            
+            !GetAtt SQSQueue1.QueueName            
                     
 
   SQSQueue1:

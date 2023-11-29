@@ -5,7 +5,7 @@ import AWS from 'aws-sdk';
 dotenv.config();
 
 const url = 'https://www.amazon.com/Logitech-C920x-Pro-HD-Webcam/dp/B085TFF7M1/ref=sr_1_1_sspa?crid=3N94NSSDWEK20&keywords=webcam&qid=1701005222&sprefix=webcam%2Caps%2C390&sr=8-1-spons&ufe=app_do%3Aamzn1.fos.304cacc1-b508-45fb-a37f-a2c47c48c32f&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1';
-
+const maxPages = 10;
 const param={
     region: process.env.region,
     // accesskey:process.env.accesskey,
@@ -16,7 +16,11 @@ AWS.config.update(param);
 const sqsAmazon = new AWS.SQS({apiVersion: '2012-11-05'});
 const queueUrl=process.env.queueUrl;
 
-async function webSpider_AmazonSQS(maxPages = 10) { 
+export const handler = async (event,context) =>{
+  webSpider_AmazonSQS();
+}
+
+async function webSpider_AmazonSQS() { 
     
 	// initialized with the first webpage to visit 
 	const paginationQueueURLsToVisit = ["https://scrapeme.live/shop"]; 
@@ -102,7 +106,7 @@ const sqsSendMessage = async (messageData) =>{
 
 
 // running the main() function 
- webSpider_AmazonSQS();
+//  webSpider_AmazonSQS();
 // webSpider() 
 // 	.then(() => { 
 // 		// successful ending 
