@@ -2,25 +2,18 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: 'AWS::Serverless-2016-10-31'
 Description: WebSpider Cloudformation.
 Resources:
-  NodeModulesLayer:
-    Type: AWS::Serverless::LayerVersion
-    Properties:
-      ContentUri: ./nodejs/
-      CompatibleRuntimes:
-        - nodejs18.x  # Adjust this based on your Lambda function runtime
-      Description: Node Modules for Webspider(axios,cheerio,aws-sdk)
-
   WebspiderRootLambda:
     Type: 'AWS::Serverless::Function'
     Properties:
       Handler: index.webSpider_AmazonSQS
       Runtime: nodejs18.x
-      CodeUri: .
+      CodeUri: .     
       Description: WespiderRoot Function
       MemorySize: 128
       Timeout: 30
-      Layers:
-        - !Ref NodeModulesLayer
+      Environment:
+        Variables:
+          region: !Ref AWS::Region
     Policies:
       - SQSSendMessagePolicy:
           QueueName:
@@ -35,8 +28,9 @@ Resources:
       Description: Wespider SQS Function
       MemorySize: 128
       Timeout: 30
-      Layers:
-        - !Ref NodeModulesLayer
+      Environment:
+        Variables:
+          region: !Ref AWS::Region      
     Policies:
       - SQSSendMessagePolicy:
           QueueName:
@@ -46,8 +40,9 @@ Resources:
             !GetAtt webSpiderQueue.QueueName            
                     
 
-  webSpiderQueue:
+  SQSQueue1:
     Type: 'AWS::SQS::Queue'
     Properties:
       QueueName: webSpiderQueue
       VisibilityTimeout: 30
+      SqsManagedSseEnabled: true

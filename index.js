@@ -8,17 +8,13 @@ const url = 'https://www.amazon.com/Logitech-C920x-Pro-HD-Webcam/dp/B085TFF7M1/r
 
 const param={
     region: process.env.region,
-    accesskey:process.env.accesskey,
-    secretAccessKey:process.env.secretAccessKey
-
+    // accesskey:process.env.accesskey,
+    // secretAccessKey:process.env.secretAccessKey
 }
-console.log(`region: ${process.env.region}`)
-console.log(`accesskey: ${process.env.accesskey}`)
-console.log(`secretAccessKey: ${process.env.secretAccessKey}`)
 
-// AWS.config.update(param);
-// const sqsAmazon = new AWS.SQS({apiVersion: '2012-11-05'});
-// const queueUrl="https://sqs.us-east-1.amazonaws.com/201814457761/webSpiderQueue";
+AWS.config.update(param);
+const sqsAmazon = new AWS.SQS({apiVersion: '2012-11-05'});
+const queueUrl=process.env.queueUrl;
 
 async function webSpider_AmazonSQS(maxPages = 10) { 
     
@@ -106,7 +102,7 @@ const sqsSendMessage = async (messageData) =>{
 
 
 // running the main() function 
-// webSpider_AmazonSQS();
+ webSpider_AmazonSQS();
 // webSpider() 
 // 	.then(() => { 
 // 		// successful ending 

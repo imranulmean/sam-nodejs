@@ -2,16 +2,16 @@ import axios from 'axios';
 import cheerio from 'cheerio';
 import AWS from 'aws-sdk';
 
-
 const param={
-    region: 'us-east-1',
-    accesskey:'AKIAS57IUHWQZT3UWYNS',
-    secretAccessKey:'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'
+    region: process.env.region,
+    // accesskey:process.env.accesskey,
+    // secretAccessKey:process.env.secretAccessKey
 
 }
+
 AWS.config.update(param);
 const sqsAmazon = new AWS.SQS({apiVersion: '2012-11-05'});
-const queueUrl="https://sqs.us-east-1.amazonaws.com/201814457761/webSpiderQueue";
+const queueUrl=process.env.queueUrl;
 
 
 const sqsReceiveMessage = async () =>{

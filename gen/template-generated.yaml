@@ -1,0 +1,53 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: WebSpider Cloudformation.
+Resources:
+  WebspiderRootLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.webSpider_AmazonSQS
+      Runtime: nodejs18.x
+      CodeUri: s3://sam-fahad-nodejs/b1d5ceeb01ceaa354bc0083ecf61e5a9
+      Description: WespiderRoot Function
+      MemorySize: 128
+      Timeout: 30
+      Environment:
+        Variables:
+          region:
+            Ref: AWS::Region
+    Policies:
+    - SQSSendMessagePolicy:
+        QueueName:
+          Fn::GetAtt:
+          - webSpiderQueue
+          - QueueName
+  WebspiderSqsReceive:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: sqsReceiveMesg.sqsReceiveMessage
+      Runtime: nodejs18.x
+      CodeUri: s3://sam-fahad-nodejs/b1d5ceeb01ceaa354bc0083ecf61e5a9
+      Description: Wespider SQS Function
+      MemorySize: 128
+      Timeout: 30
+      Environment:
+        Variables:
+          region:
+            Ref: AWS::Region
+    Policies:
+    - SQSSendMessagePolicy:
+        QueueName:
+          Fn::GetAtt:
+          - webSpiderQueue
+          - QueueName
+    - SQSPollerPolicy:
+        QueueName:
+          Fn::GetAtt:
+          - webSpiderQueue
+          - QueueName
+  SQSQueue1:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: webSpiderQueue
+      VisibilityTimeout: 30
+      SqsManagedSseEnabled: true

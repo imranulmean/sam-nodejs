@@ -1,8 +1,8 @@
 # create s3 bucket
-aws s3 mb s3://sam-fahad-bucket
+aws s3 mb s3://sam-fahad-nodejs
 
 #package cloudformation
-aws cloudformation package --s3-bucket sam-fahad-bucket --template-file template.yaml --output-template-file gen/template-generated.yaml
+aws cloudformation package --s3-bucket sam-fahad-nodejs --template-file template.yaml --output-template-file gen/template-generated.yaml
 
 #package deploy
-aws cloudformation deploy --template-file gen/template-generated.yaml --stack-name sam-fahad-stack --capabilities CAPABILITY_IAM
+aws cloudformation deploy --template-file gen/template-generated.yaml --stack-name sam-fahad-nodejs --capabilities CAPABILITY_IAM
