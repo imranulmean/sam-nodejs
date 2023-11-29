@@ -4,12 +4,6 @@ import AWS from 'aws-sdk';
 
 const url = 'https://www.amazon.com/Logitech-C920x-Pro-HD-Webcam/dp/B085TFF7M1/ref=sr_1_1_sspa?crid=3N94NSSDWEK20&keywords=webcam&qid=1701005222&sprefix=webcam%2Caps%2C390&sr=8-1-spons&ufe=app_do%3Aamzn1.fos.304cacc1-b508-45fb-a37f-a2c47c48c32f&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1';
 
-const param={
-    region: 'us-east-1',
-    accesskey:'AKIAS57IUHWQZT3UWYNS',
-    secretAccessKey:'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'
-
-}
 AWS.config.update(param);
 const sqsAmazon = new AWS.SQS({apiVersion: '2012-11-05'});
 const queueUrl="https://sqs.us-east-1.amazonaws.com/201814457761/webSpiderQueue";
