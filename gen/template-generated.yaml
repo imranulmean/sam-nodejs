@@ -7,7 +7,7 @@ Resources:
     Properties:
       Handler: index.handler
       Runtime: nodejs18.x
-      CodeUri: s3://sam-fahad-nodejs/136477d3a0bd1a6d41a7f0d4d46da9f8
+      CodeUri: s3://sam-fahad-nodejs/28e9dbcd77742a883d7edbf5af18fac4
       Description: WespiderRoot Function
       MemorySize: 128
       Timeout: 30
@@ -33,7 +33,7 @@ Resources:
     Properties:
       Handler: sqsReceiveMesg.handler
       Runtime: nodejs18.x
-      CodeUri: s3://sam-fahad-nodejs/136477d3a0bd1a6d41a7f0d4d46da9f8
+      CodeUri: s3://sam-fahad-nodejs/28e9dbcd77742a883d7edbf5af18fac4
       Description: Wespider SQS Function
       MemorySize: 128
       Timeout: 30

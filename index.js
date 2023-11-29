@@ -17,7 +17,7 @@ const sqsAmazon = new AWS.SQS({apiVersion: '2012-11-05'});
 const queueUrl=process.env.queueUrl;
 
 export const handler = async (event,context) =>{
-  webSpider_AmazonSQS();
+  await webSpider_AmazonSQS();
 }
 
 async function webSpider_AmazonSQS() { 
