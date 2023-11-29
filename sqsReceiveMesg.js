@@ -55,6 +55,7 @@ const sqsDeleteMessage= async (receiptHandle) =>{
           console.log("Message Deleted", data);
         }
       });    
+      
 }
 
 await sqsReceiveMessage();

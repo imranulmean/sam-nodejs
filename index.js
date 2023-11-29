@@ -14,7 +14,7 @@ AWS.config.update(param);
 const sqsAmazon = new AWS.SQS({apiVersion: '2012-11-05'});
 const queueUrl="https://sqs.us-east-1.amazonaws.com/201814457761/webSpiderQueue";
 
-async function webSpider_AmazonSQS(maxPages = 2) { 
+async function webSpider_AmazonSQS(maxPages = 10) { 
     
 	// initialized with the first webpage to visit 
 	const paginationQueueURLsToVisit = ["https://scrapeme.live/shop"]; 
@@ -61,7 +61,7 @@ async function webSpider_AmazonSQS(maxPages = 2) {
 	} 
  	// logging the crawling results 
     console.log(visitedURLs); 
-	//  console.log([...productURLs]);
+	console.log([...productURLs]);
 } 
 
 const sqsSendMessage = async (messageData) =>{
