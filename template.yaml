@@ -14,6 +14,10 @@ Resources:
       Environment:
         Variables:
           region: !Ref AWS::Region
+          queueUrl: !GetAtt SQSQueue1.QueueUrl
+      Layers:
+        - arn:aws:lambda:us-east-1:201814457761:layer:AWS-SDK-NodeModules:1
+        - arn:aws:lambda:us-east-1:201814457761:layer:WebSpider-Nodemodules:1          
     Policies:
       - SQSSendMessagePolicy:
           QueueName:
@@ -30,7 +34,11 @@ Resources:
       Timeout: 30
       Environment:
         Variables:
-          region: !Ref AWS::Region      
+          region: !Ref AWS::Region
+          queueUrl: !GetAtt SQSQueue1.QueueUrl
+      Layers:
+        - arn:aws:lambda:us-east-1:201814457761:layer:AWS-SDK-NodeModules:1
+        - arn:aws:lambda:us-east-1:201814457761:layer:WebSpider-Nodemodules:1          
     Policies:
       - SQSSendMessagePolicy:
           QueueName:
