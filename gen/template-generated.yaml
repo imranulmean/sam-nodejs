@@ -7,7 +7,7 @@ Resources:
     Properties:
       Handler: index.handler
       Runtime: nodejs18.x
-      CodeUri: s3://sam-fahad-nodejs/902e43e49702f8148fe58f08c3526670
+      CodeUri: s3://sam-fahad-nodejs/283be7631c1a0f129b95e54e396de87f
       Description: Webspider Root Function
       MemorySize: 128
       Timeout: 30
@@ -37,7 +37,7 @@ Resources:
     Properties:
       Handler: sqsReceiveMesg.handler
       Runtime: nodejs18.x
-      CodeUri: s3://sam-fahad-nodejs/902e43e49702f8148fe58f08c3526670
+      CodeUri: s3://sam-fahad-nodejs/283be7631c1a0f129b95e54e396de87f
       Description: Webspider SQS Function
       MemorySize: 128
       Timeout: 30

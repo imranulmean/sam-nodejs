@@ -93,15 +93,23 @@ const sqsSendMessage = async (messageData) =>{
        // MessageGroupId: "Group1",  // Required for FIFO queues
        QueueUrl: queueUrl
      };
-     sqsAmazon.sendMessage(params, function(err, data) {
-        if (err) {
-          console.log("Error", err);
-          return;
-        } else {
-          console.log("Success", data.MessageId);
-          return data;
-        }
-      });     
+
+     try {
+      const sendSqsMessage= await sqsAmazon.sendMessage(params).promise();
+      console.log(sendSqsMessage.MessageId);
+      return sendSqsMessage;
+     } catch (error) {
+      console.log(error);
+     }
+    //  sqsAmazon.sendMessage(params, function(err, data) {
+    //     if (err) {
+    //       console.log("Error", err);
+    //       return;
+    //     } else {
+    //       console.log("Success", data.MessageId);
+    //       return data;
+    //     }
+    //   });     
 }
 
 
