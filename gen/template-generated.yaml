@@ -7,8 +7,8 @@ Resources:
     Properties:
       Handler: index.handler
       Runtime: nodejs18.x
-      CodeUri: s3://sam-fahad-nodejs/28e9dbcd77742a883d7edbf5af18fac4
-      Description: WespiderRoot Function
+      CodeUri: s3://sam-fahad-nodejs/902e43e49702f8148fe58f08c3526670
+      Description: Webspider Root Function
       MemorySize: 128
       Timeout: 30
       Environment:
@@ -22,19 +22,23 @@ Resources:
       Layers:
       - arn:aws:lambda:us-east-1:201814457761:layer:AWS-SDK-NodeModules:1
       - arn:aws:lambda:us-east-1:201814457761:layer:WebSpider-Nodemodules:1
-    Policies:
-    - SQSSendMessagePolicy:
-        QueueName:
-          Fn::GetAtt:
-          - webSpiderQueue
-          - QueueName
+      Policies:
+      - Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - sqs:SendMessage
+          Resource:
+            Fn::GetAtt:
+            - SQSQueue1
+            - Arn
   WebspiderSqsReceive:
     Type: AWS::Serverless::Function
     Properties:
       Handler: sqsReceiveMesg.handler
       Runtime: nodejs18.x
-      CodeUri: s3://sam-fahad-nodejs/28e9dbcd77742a883d7edbf5af18fac4
-      Description: Wespider SQS Function
+      CodeUri: s3://sam-fahad-nodejs/902e43e49702f8148fe58f08c3526670
+      Description: Webspider SQS Function
       MemorySize: 128
       Timeout: 30
       Environment:
@@ -48,17 +52,18 @@ Resources:
       Layers:
       - arn:aws:lambda:us-east-1:201814457761:layer:AWS-SDK-NodeModules:1
       - arn:aws:lambda:us-east-1:201814457761:layer:WebSpider-Nodemodules:1
-    Policies:
-    - SQSSendMessagePolicy:
-        QueueName:
-          Fn::GetAtt:
-          - SQSQueue1
-          - QueueName
-    - SQSPollerPolicy:
-        QueueName:
-          Fn::GetAtt:
-          - SQSQueue1
-          - QueueName
+      Policies:
+      - Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - sqs:SendMessage
+          - sqs:DeleteMessage
+          - sqs:ReceiveMessage
+          Resource:
+            Fn::GetAtt:
+            - SQSQueue1
+            - Arn
   SQSQueue1:
     Type: AWS::SQS::Queue
     Properties:
