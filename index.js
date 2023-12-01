@@ -5,7 +5,7 @@ import AWS from 'aws-sdk';
 dotenv.config();
 
 const url = 'https://www.amazon.com/Logitech-C920x-Pro-HD-Webcam/dp/B085TFF7M1/ref=sr_1_1_sspa?crid=3N94NSSDWEK20&keywords=webcam&qid=1701005222&sprefix=webcam%2Caps%2C390&sr=8-1-spons&ufe=app_do%3Aamzn1.fos.304cacc1-b508-45fb-a37f-a2c47c48c32f&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1';
-const maxPages = 10;
+const maxPages = 1;
 const param={
     region: process.env.region,
     // accesskey:process.env.accesskey,
@@ -20,6 +20,8 @@ export const handler = async (event,context) =>{
   await webSpider_AmazonSQS();
 }
 
+
+
 async function webSpider_AmazonSQS() { 
     
 	// initialized with the first webpage to visit 
@@ -31,43 +33,29 @@ async function webSpider_AmazonSQS() {
 		paginationQueueURLsToVisit.length !== 0 && 
 		visitedURLs.length <= maxPages 
 	) { 
-		// the current webpage to crawl 
-		const paginationURL = paginationQueueURLsToVisit.pop(); 
- 
-		// retrieving the HTML content from paginationURL 
-		const pageHTML = await axios.get(paginationURL); 
- 
-		// adding the current webpage to the 
-		// web pages already crawled 
-		visitedURLs.push(paginationURL); 
+		// Get the Very first URL from the queue to crawl to list all the paginated URL. ex: page1,page2,...
+		const paginationURLRoot = paginationQueueURLsToVisit.pop();
+    console.log(paginationURLRoot);
+		const pageHTML = await axios.get(paginationURLRoot);
+		visitedURLs.push(paginationURLRoot); 
 		const $ = cheerio.load(pageHTML.data); 
- 
-		// retrieving the pagination URLs 
 		$(".page-numbers a").each((index, element) => {
-			const paginationURL = $(element).attr("href"); 
-            
-			// adding the pagination URL to the queue 
-			// of web pages to crawl, if it wasn't yet crawled 
+			const paginationPageUrl = $(element).attr("href"); 
 			if ( 
-				!visitedURLs.includes(paginationURL) && 
-				!paginationQueueURLsToVisit.includes(paginationURL) 
+				!visitedURLs.includes(paginationPageUrl) && 
+				!paginationQueueURLsToVisit.includes(paginationPageUrl) 
 			) { 
-				paginationQueueURLsToVisit.push(paginationURL)
+				paginationQueueURLsToVisit.push(paginationPageUrl)
 			} 
 		}); 
         for(let p of paginationQueueURLsToVisit){
             await sqsSendMessage(p);
         }
-		// retrieving the product URLs
-		$("li.product a.woocommerce-LoopProduct-link").each((index, element) => { 
-			const productURL = $(element).attr("href"); 
-			productURLs.add(productURL); 
-		});
         console.log(`Visited URLS Current Length ${visitedURLs.length}`);
 	} 
  	// logging the crawling results 
-    console.log(visitedURLs); 
-	console.log([...productURLs]);
+   console.log(paginationQueueURLsToVisit); 
+//	console.log([...productURLs]);
 } 
 
 const sqsSendMessage = async (messageData) =>{
@@ -100,19 +88,10 @@ const sqsSendMessage = async (messageData) =>{
       return sendSqsMessage;
      } catch (error) {
       console.log(error);
-     }
-    //  sqsAmazon.sendMessage(params, function(err, data) {
-    //     if (err) {
-    //       console.log("Error", err);
-    //       return;
-    //     } else {
-    //       console.log("Success", data.MessageId);
-    //       return data;
-    //     }
-    //   });     
+     }    
 }
 
-
+// await handler();
 // running the main() function 
 //  webSpider_AmazonSQS();
 // webSpider() 

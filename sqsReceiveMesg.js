@@ -5,11 +5,11 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+const productURLs= new Set();
 const param={
     region: process.env.region,
     // accesskey:process.env.accesskey,
     // secretAccessKey:process.env.secretAccessKey
-
 }
 
 AWS.config.update(param);
@@ -17,7 +17,7 @@ const sqsAmazon = new AWS.SQS({apiVersion: '2012-11-05'});
 const queueUrl=process.env.queueUrl;
 
 export const handler = async (event,context) =>{
-    await sqsReceiveMessage();
+   await sqsReceiveMessage();
   }
 
 const sqsReceiveMessage = async () =>{
@@ -41,27 +41,18 @@ const sqsReceiveMessage = async () =>{
         if (receivedMessages.Messages) {
             console.log(`Message Length: ${receivedMessages.Messages.length}`);
             for (let m of receivedMessages.Messages) {
-                console.log(`Deleting Message Id: ${m.Body}`);
-                  await sqsDeleteMessage(m.ReceiptHandle);
+               // console.log(`Deleting Message Id: ${m.Body}`);
+                 // now go to the Main URL and Get the All products Link, Name and Price and make an object and store them in productURLs
+                 getProductsUrl(m.Body);                
+                // after storing the urls delete that message from the sqs queue
+                await sqsDeleteMessage(m.ReceiptHandle);
             }
         }
+        // now show the products urls from the variable named productURLs
+              console.log([...productURLs]);
     } catch (err) {
         console.error("Receive Error", err);
-    }       
-
-      //  sqsAmazon.receiveMessage(params, function(err, data) {
-      //    if (err) {
-      //      console.log("Receive Error", err);
-      //    } else if (data.Messages) {
-      //        console.log(`Message Lenght:${data.Messages.length}`);
-      //        for(let m of data.Messages){
-      //             console.log(`deleteing Message Id: ${m.Body}`)
-      //            sqsDeleteMessage(m.ReceiptHandle).then(res=>{
-      //                console.log(res);
-      //            });
-      //        }
-      //    }
-      //  });
+    }
 }
 
 const sqsDeleteMessage= async (receiptHandle) =>{
@@ -69,13 +60,6 @@ const sqsDeleteMessage= async (receiptHandle) =>{
         QueueUrl: queueUrl,
         ReceiptHandle: receiptHandle
       };
-      // sqsAmazon.deleteMessage(deleteParams, function(err, data) {
-      //   if (err) {
-      //     console.log("Delete Error", err);
-      //   } else {
-      //     console.log("Message Deleted", data);
-      //   }
-      // }); 
       try {
         const deletedMessage= await sqsAmazon.deleteMessage(deleteParams).promise();
           console.log("Message Deleted", deletedMessage);
@@ -85,4 +69,20 @@ const sqsDeleteMessage= async (receiptHandle) =>{
       
 }
 
-//await sqsReceiveMessage();
+const getProductsUrl = async (pUrl) =>{
+  // console.log(pUrl);
+  const pageHtml = await axios.get(pUrl);
+  const $ = cheerio.load(pageHtml.data);
+  // showing all the products in the page and storing in the productURLs
+  $("li.product").each((index, element) => {   
+    
+    const productLink = $(element).find("a.woocommerce-LoopProduct-link");
+    const productUrl=productLink.attr("href")
+    const title = productLink.find("h2.woocommerce-loop-product__title").text();
+    const priceElement = productLink.find("span.price span.woocommerce-Price-amount.amount");
+    const price = priceElement.text().trim();
+    let productObj={productUrl, title, price};
+    productURLs.add(productObj); 
+  });  
+}
+// await handler();
