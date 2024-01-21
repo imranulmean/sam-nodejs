@@ -7,12 +7,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js",
-    "dev2": "nodemon sqsReceiveMesg.js"
+    "dev2": "nodemon sqsReceiveMesg.js",
+    "render": "nodemon render-server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.1502.0",
+  
     "axios": "^1.6.2",
     "cheerio": "^1.0.0-rc.12",
     "dotenv": "^16.3.1",
