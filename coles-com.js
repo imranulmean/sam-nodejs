@@ -6,13 +6,13 @@ const url = 'https://www.coles.com.au/browse/dairy-eggs-fridge?pid=homepage_cat_
 const mainDomain="https://www.coles.com.au/";
 const visitedURLs = []; 
 const productURLs = new Set(); 
- const paginationQueueURLsToVisit = ["/browse/dairy-eggs-fridge?pid=homepage_cat_explorer_dairy_eggs_fridge"];
-const maxPages = 50;
+ const paginationQueueURLsToVisit = ["browse/fruit-vegetables"];
+const maxPages = 1;
 const products=[];
-let count=0;
+
 
 async function webSpider() {     
-
+  let count=0;
     ////////////////Get the Paginations//////////////    
     while(paginationQueueURLsToVisit.length !== 0 && visitedURLs.length <= maxPages  ){
       const paginationURLRoot = paginationQueueURLsToVisit.pop();
@@ -24,19 +24,21 @@ async function webSpider() {
       const $ = cheerio.load(pageHTML1.data);
 
       ///////////// Get Products Information ////////////
-        const productTiles = $('[data-testid="product-tile"]');
+        const productLinks = $('.product__link');
         let onPageProducts=[];
         let paginationObj={
           "paginationUrl":`${mainDomain}${paginationURLRoot}`
         };
-        productTiles.each((index, element) => {
+        productLinks.each((index, element) => {
           const productTitle = $(element).find('.product__title').text().trim();
-          const productPrice = $(element).find('.price__value').text();
+          const productPrice = $(element).closest("section").find('.price__value').text().trim();
           const cleanedPrice = productPrice.replace(/\$([0-9]+\.[0-9]+)\$\1/, '$$$1');
           console.log(`Product Title ${index + 1}: ${productTitle} Price: ${cleanedPrice}`);
           let productInfo={productTitle, productPrice:cleanedPrice};
-          onPageProducts.push(JSON.stringify(productInfo));
-          count++;
+          if(productTitle!==""){
+            onPageProducts.push(productInfo);
+            count++;
+          }
       });      
       paginationObj['onPageProducts']=onPageProducts;
       products.push(paginationObj);
@@ -54,21 +56,25 @@ async function webSpider() {
       products,
     }
       // console.log("Products:", obj);
+      // "nodemonConfig": {
+      //   "ignore": ["*.json"]
+      // }       
     const productsString = JSON.stringify(obj, null, 2);
-    fs.writeFileSync('./products.txt', productsString);
+     fs.writeFileSync('./products.txt', productsString);
 } 
 
  webSpider();
 
-// async function getPublicIP() {
-//     try {
-//       const response = await axios.get('https://api64.ipify.org?format=json');
-//       const ipAddress = response.data;
-//       console.log('Your public IP address is:', ipAddress);
-//     } catch (error) {
-//       console.error('Error fetching public IP:', error.message);
-//     }
-//   }
+async function getPublicIP() {
+    try {
+      const response = await axios.get('https://api64.ipify.org?format=json');
+      const ipAddress = response.data;
+      console.log('Your public IP address is:', ipAddress);
+    } catch (error) {
+      console.error('Error fetching public IP:', error.message);
+    }
+  }
   
-//   getPublicIP();
+  getPublicIP();
+
 
