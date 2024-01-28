@@ -1,0 +1,9 @@
+{
+  "totalProducts": 0,
+  "products": [
+    {
+      "paginationUrl": "https://www.coles.com.au//browse/dairy-eggs-fridge?pid=homepage_cat_explorer_dairy_eggs_fridge",
+      "onPageProducts": []
+    }
+  ]
+}
