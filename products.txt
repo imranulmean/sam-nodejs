@@ -1,9 +1,0 @@
-{
-  "totalProducts": 0,
-  "products": [
-    {
-      "paginationUrl": "https://www.coles.com.au/browse/fruit-vegetables",
-      "onPageProducts": []
-    }
-  ]
-}

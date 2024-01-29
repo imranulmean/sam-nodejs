@@ -7,7 +7,7 @@ const mainDomain="https://www.coles.com.au/";
 const visitedURLs = []; 
 const productURLs = new Set(); 
  const paginationQueueURLsToVisit = ["browse/fruit-vegetables"];
-const maxPages = 1;
+const maxPages = 50;
 const products=[];
 
 
@@ -60,7 +60,7 @@ async function webSpider() {
       //   "ignore": ["*.json"]
       // }       
     const productsString = JSON.stringify(obj, null, 2);
-     fs.writeFileSync('./products.txt', productsString);
+     fs.writeFileSync('./products.json', productsString);
 } 
 
  webSpider();

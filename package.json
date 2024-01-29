@@ -9,18 +9,19 @@
     "dev": "nodemon index.js",
     "dev2": "nodemon sqsReceiveMesg.js",
     "render": "nodemon render-server.js",
-    "coles": "nodemon coles-com.js"
+    "coles": "node coles-com.js",
+    "wool": "nodemon woolworths-com.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-  
     "axios": "^1.6.2",
     "cheerio": "^1.0.0-rc.12",
     "dotenv": "^16.3.1",
     "fs": "^0.0.1-security",
     "http": "^0.0.1-security",
     "nodemon": "^3.0.1",
-    "path": "^0.12.7"
-  } 
+    "path": "^0.12.7",
+    "puppeteer": "^21.9.0"
+  }
 }
