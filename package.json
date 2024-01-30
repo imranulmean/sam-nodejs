@@ -9,7 +9,7 @@
     "dev": "nodemon index.js",
     "dev2": "nodemon sqsReceiveMesg.js",
     "render": "nodemon render-server.js",
-    "coles": "node coles-com.js",
+    "coles": "nodemon coles-com.js",
     "wool": "nodemon woolworths-com.js"
   },
   "author": "",

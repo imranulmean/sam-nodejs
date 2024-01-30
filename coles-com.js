@@ -63,7 +63,7 @@ async function webSpider() {
      fs.writeFileSync('./products.json', productsString);
 } 
 
- webSpider();
+//  webSpider();
 
 async function getPublicIP() {
     try {
@@ -75,6 +75,48 @@ async function getPublicIP() {
     }
   }
   
-  getPublicIP();
+  // getPublicIP();
 
+// ---------------------------------------------
+class TreeNode {
+  constructor(value) {
+    this.value = value;
+    this.left = null;
+    this.right = null;
+  }
+}
+const a = new TreeNode(5);
+const b = new TreeNode(3);
+const c = new TreeNode(9);
+const d = new TreeNode(14);
+const e = new TreeNode(2);
+const f = new TreeNode(6);
+const g = new TreeNode(4);
+const h = new TreeNode(1);
 
+a.left = b;
+a.right = c;
+b.left = d;
+b.right = e;
+c.left = e;
+c.right = f;
+d.left=g;
+d.right=h;
+
+function maxPathSum(root) {
+  if (!root) return 0;
+  
+  function maxPathSumHelper(node) {
+    if (!node) return 0;
+    let maxSum = Number.MIN_SAFE_INTEGER;
+
+    const leftSum = Math.max(0, maxPathSumHelper(node.left));
+    const rightSum = Math.max(0, maxPathSumHelper(node.right));
+    maxSum = Math.max(maxSum, leftSum + rightSum + node.value);
+    return Math.max(leftSum, rightSum) + node.value;
+  }
+  return maxPathSumHelper(root);
+}
+
+const maximumSum = maxPathSum(a);
+console.log("Correct Maximum Sum:", maximumSum);
