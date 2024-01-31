@@ -21,17 +21,22 @@ async function scrapeWoolworths() {
       await page.goto('https://www.woolworths.com.au/shop/browse/fruit-veg', {
         waitUntil: 'networkidle2',
       });
-      await page.waitForResponse(response => response.status() === 200); 
-        await page.screenshot({ path: 'example.png' });
+      await page.waitForResponse(async response =>  {        
+        if(response.status() == 200){
+          console.log(response.status())
+          await page.screenshot({ path: 'example.png' });
+          const html = await page.content();
+          const $ = cheerio.load(html);
+          console.log($("div .product-title-container .title").text());
+        }
+        
+      }); 
 
       
-      // Wait for the dynamic content to be loaded (adjust the selector as needed)
-      await page.waitForSelector('.ng-star-inserted');
-  
+      return;
       // Get the HTML content of the page after dynamic content has loaded
       const html = await page.content();
-      fs.writeFileSync('./wools2.txt', html);
-      
+      fs.writeFileSync('./wools2.txt', html);      
       // Load the HTML into Cheerio
       const $ = cheerio.load(html);
   
