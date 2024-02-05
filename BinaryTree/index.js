@@ -160,37 +160,85 @@ import fs from 'fs';
 // fs.writeFileSync('./BinaryTree.txt',JSON.stringify(root, null, 2));
 
 // -------------------------------------
-class TreeNode {
-  constructor(value) {
-    this.value = value;
-    this.left = null;
-    this.right = null;
+// class TreeNode {
+//   constructor(value) {
+//     this.value = value;
+//     this.left = null;
+//     this.right = null;
+//   }
+// }
+
+// function createBinaryTree(arr) {
+//   if (!arr || arr.length === 0) {
+//     return null;
+//   }
+
+//   // Create nodes for each element in the array
+//   const nodes = arr.map(value => new TreeNode(value));
+
+//   // Connect nodes to form the binary tree
+//   for (let i = 0; i < nodes.length; i++) {
+//     if (2 * i + 1 < nodes.length) {
+//       nodes[i].left = nodes[2 * i + 1];
+//     }
+//     if (2 * i + 2 < nodes.length) {
+//       nodes[i].right = nodes[2 * i + 2];
+//     }
+//   }
+
+//   return nodes[0]; // Return the root of the binary tree
+// }
+
+// // Example usage
+// const inputArray = [5, 3, 9, 14, 2];
+// const root = createBinaryTree(inputArray);
+
+// console.log(root);
+
+// ------------------------------------------
+
+const arr = [5, 3, 9, 14, 2, 6, 4, 1];
+
+// Function to create an adjacency matrix from the given array
+function createAdjacencyMatrix(arr) {
+  const n = arr.length;
+  const matrix = [];
+  const levels = Array(n).fill(0);
+
+  // Initialize the matrix with zeros
+  for (let i = 0; i < n; i++) {
+    matrix[i] = Array(n).fill(0);
   }
+
+  // Set edges in the matrix based on the array
+  for (let i = 0; i < n; i++) {
+    let leftChildIndex = 2 * i + 1;
+    let rightChildIndex = 2 * i + 2;
+
+    if (i > 0) {
+      leftChildIndex = 2 * i;
+      rightChildIndex = 2 * i + 1;
+      levels[i] = Math.floor((i - 1) / 2) + 1 ;
+      
+    }
+
+    if (leftChildIndex < n) {
+      matrix[i][leftChildIndex] = 1;
+      matrix[leftChildIndex][i] = 1;
+    }
+
+    if (rightChildIndex < n) {
+      matrix[i][rightChildIndex] = 1;
+      matrix[rightChildIndex][i] = 1;
+    }
+    // console.log("For Index:", i);
+    console.log(`levels[${i}]: ${levels[i]}`);
+    // console.log("matrix:", matrix[i]);
+
+  }
+
+  return matrix;
 }
 
-function createBinaryTree(arr) {
-  if (!arr || arr.length === 0) {
-    return null;
-  }
-
-  // Create nodes for each element in the array
-  const nodes = arr.map(value => new TreeNode(value));
-
-  // Connect nodes to form the binary tree
-  for (let i = 0; i < nodes.length; i++) {
-    if (2 * i + 1 < nodes.length) {
-      nodes[i].left = nodes[2 * i + 1];
-    }
-    if (2 * i + 2 < nodes.length) {
-      nodes[i].right = nodes[2 * i + 2];
-    }
-  }
-
-  return nodes[0]; // Return the root of the binary tree
-}
-
-// Example usage
-const inputArray = [5, 3, 9, 14, 2];
-const root = createBinaryTree(inputArray);
-
-console.log(root);
+const adjMatrix = createAdjacencyMatrix(arr);
+// console.log(adjMatrix);
