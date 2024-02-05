@@ -117,110 +117,42 @@ import fs from 'fs';
 // // Run the main function
 // main();
 
-// -------------------------------------------------------
+// -------------------------------------------------
 
-// class TreeNode {
-//   constructor(value) {
-//     this.value = value;
-//     this.left = null;
-//     this.right = null;
-//   }
-// }
+const array = [5,3,9,14,2];
 
-// // Function to build the binary tree based on provided input
-// const buildBinaryTree = (values) => {
+/////////////////////////////
+const track= new Map();
 
-//   const buildTree = (index) => {
-//     console.log(index);
-//     if (index >= values.length) {
-//       return null;
-//     }
+let currentIndex = 0;
+let numRows = 0;
+const rows = [];
 
-//     const node = new TreeNode(values[index]);
-//     node.left = buildTree(2 * index + 1);
-//     node.right = buildTree(2 * index + 2);
+while (currentIndex < array.length) {
+  numRows++;
+  const row = [];
 
-//     return node;
-//   };
-  
-//   return buildTree(0);
-// };
+  for (let j = 0; j < numRows; j++) {
+    //  console.log(`For Index: ${currentIndex} is Row Number: ${numRows}`)
+     track.set(currentIndex, numRows);
+     row.push(array[currentIndex++]);    
+  }
+}
+////////////////////////////
 
-// // Main function
-// const main = () => {
-//   const inputValues = [5, 3, 9, 14, 2, 6];
-//   const root = buildBinaryTree(inputValues);
-
-//   fs.writeFileSync('./BinaryTree.txt',JSON.stringify(root, null, 2));
-//   // console.log('Binary Tree:', JSON.stringify(root, null, 2));
-// };
-
-// // Run the main function
-// main();
-// fs.writeFileSync('./BinaryTree.txt',JSON.stringify(root, null, 2));
-
-// -------------------------------------
-// class TreeNode {
-//   constructor(value) {
-//     this.value = value;
-//     this.left = null;
-//     this.right = null;
-//   }
-// }
-
-// function createBinaryTree(arr) {
-//   if (!arr || arr.length === 0) {
-//     return null;
-//   }
-
-//   // Create nodes for each element in the array
-//   const nodes = arr.map(value => new TreeNode(value));
-
-//   // Connect nodes to form the binary tree
-//   for (let i = 0; i < nodes.length; i++) {
-//     if (2 * i + 1 < nodes.length) {
-//       nodes[i].left = nodes[2 * i + 1];
-//     }
-//     if (2 * i + 2 < nodes.length) {
-//       nodes[i].right = nodes[2 * i + 2];
-//     }
-//   }
-
-//   return nodes[0]; // Return the root of the binary tree
-// }
-
-// // Example usage
-// const inputArray = [5, 3, 9, 14, 2];
-// const root = createBinaryTree(inputArray);
-
-// console.log(root);
-
-// ------------------------------------------
-
-const arr = [5, 3, 9, 14, 2, 6, 4, 1];
-
-// Function to create an adjacency matrix from the given array
 function createAdjacencyMatrix(arr) {
-  const n = arr.length;
+  const n = array.length;
   const matrix = [];
-  const levels = Array(n).fill(0);
 
-  // Initialize the matrix with zeros
   for (let i = 0; i < n; i++) {
     matrix[i] = Array(n).fill(0);
   }
-
-  // Set edges in the matrix based on the array
+  // console.log(`getting  index 0 leftChildIndex is ${track.get(0)}`)
   for (let i = 0; i < n; i++) {
-    let leftChildIndex = 2 * i + 1;
-    let rightChildIndex = 2 * i + 2;
-
-    if (i > 0) {
-      leftChildIndex = 2 * i;
-      rightChildIndex = 2 * i + 1;
-      levels[i] = Math.floor((i - 1) / 2) + 1 ;
-      
-    }
+    let leftChildIndex = track.get(i) + i;
+    // console.log(`When index ${i} leftChildIndex is ${leftChildIndex}`)
+    let rightChildIndex = leftChildIndex + 1;
+    // console.log(`When index ${i} rightChildIndex is ${rightChildIndex}`)
 
     if (leftChildIndex < n) {
       matrix[i][leftChildIndex] = 1;
@@ -232,7 +164,6 @@ function createAdjacencyMatrix(arr) {
       matrix[rightChildIndex][i] = 1;
     }
     // console.log("For Index:", i);
-    console.log(`levels[${i}]: ${levels[i]}`);
     // console.log("matrix:", matrix[i]);
 
   }
@@ -240,5 +171,14 @@ function createAdjacencyMatrix(arr) {
   return matrix;
 }
 
-const adjMatrix = createAdjacencyMatrix(arr);
-// console.log(adjMatrix);
+const adjMatrix = createAdjacencyMatrix(array);
+//  console.log(adjMatrix);
+ for (let i = 0; i < adjMatrix.length; i++) {
+  let rowString = '';
+  
+  for (let j = 0; j < adjMatrix[i].length; j++) {
+    rowString += adjMatrix[i][j] + ' ';
+  }
+
+  console.log(rowString.trim());
+ }
