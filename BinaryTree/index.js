@@ -1,6 +1,6 @@
 import readline from 'readline';
-import fs from 'fs';
-
+// import fs from 'fs';
+// const  readline=  require('readline');
 // class TreeNode {
 //     constructor(value) {
 //       this.value = value;
@@ -119,9 +119,16 @@ import fs from 'fs';
 
 // -------------------------------------------------
 
-const array = [5,3,9,14,2];
 
-/////////////////////////////
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+rl.question('Enter the elements separated by commas: ', (input) => {
+  
+////////////////////////////////
+const array = input.split(',').map(Number);
 const track= new Map();
 
 let currentIndex = 0;
@@ -138,7 +145,6 @@ while (currentIndex < array.length) {
      row.push(array[currentIndex++]);    
   }
 }
-////////////////////////////
 
 function createAdjacencyMatrix(arr) {
   const n = array.length;
@@ -182,3 +188,12 @@ const adjMatrix = createAdjacencyMatrix(array);
 
   console.log(rowString.trim());
  }
+/////////////////////////////////
+
+  // Close the readline interface
+  rl.close();
+});
+
+// const array = [5,3,9,14,2,6,4,1,8,2,3,2];
+
+/////////////////////////////
