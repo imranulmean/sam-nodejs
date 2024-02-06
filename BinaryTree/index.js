@@ -128,6 +128,7 @@ const rl = readline.createInterface({
 rl.question('Enter the elements separated by commas: ', (input) => {
   
 ////////////////////////////////
+// const array = [5,3,9,14,2,6,4,1,8,2,3,2];
 const array = input.split(',').map(Number);
 const track= new Map();
 
@@ -194,6 +195,6 @@ const adjMatrix = createAdjacencyMatrix(array);
   rl.close();
 });
 
-// const array = [5,3,9,14,2,6,4,1,8,2,3,2];
+
 
 /////////////////////////////
