@@ -1,6 +1,6 @@
-import readline from 'readline';
+// import readline from 'readline';
 // import fs from 'fs';
-// const  readline=  require('readline');
+const  readline=  require('readline');
 // class TreeNode {
 //     constructor(value) {
 //       this.value = value;
@@ -192,7 +192,14 @@ const adjMatrix = createAdjacencyMatrix(array);
 /////////////////////////////////
 
   // Close the readline interface
-  rl.close();
+  // Ask the user if they want to exit
+  rl.question('Do you want to exit? (yes/no): ', (answer) => {
+    if (answer.toLowerCase() === 'yes') {
+      rl.close();
+    } else {
+      rl.close();
+    }
+  });
 });
 
 
