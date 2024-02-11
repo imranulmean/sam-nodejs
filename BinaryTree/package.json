@@ -7,7 +7,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js",
-    "build": "nexe -t x86-8.0.0 index.js -o matrix.exe"
+    "graph": "nodemon graph.js",
+    "final": "nodemon final.js",
+    "build": "nexe -t x86-8.0.0 final.js -o matrix.exe"
   },
   "dependencies": {
     "nodemon": "^3.0.1",

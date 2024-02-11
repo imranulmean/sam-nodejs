@@ -196,7 +196,7 @@ import readline from 'readline';
 
 // ////////////////////// Finding the Largest Sum Value ///////////////
 
-const array1 = [0, 1, 2, 3, 4, 5];
+const array1 = [1, 2, 3, -4,-5,-6];
 const matrix = [
   [0, 1, 1, 0, 0, 0],
   [0, 0, 0, 1, 1, 0],
@@ -287,3 +287,5 @@ function findLargestSumPath(array1, matrix) {
 
 //   return { sum: maxSum, path: maxPath };
 // }
+
+
